@@ -327,6 +327,36 @@ router.post('/users', auth, async (req, res) => {
     }
 });
 
+// RESTABLECER/CAMBIAR CONTRASEÑA DE USUARIO (solo admin)
+router.put('/users/:id/password', auth, async (req, res) => {
+    try {
+        if (req.user.rol !== 'administrador') {
+            return res.status(403).json({ error: 'Acceso denegado.' });
+        }
+
+        const { id } = req.params;
+        const { password } = req.body;
+
+        if (!password || password.length < 6) {
+            return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres.' });
+        }
+
+        // Encriptar la nueva contraseña
+        const hash = await bcrypt.hash(password, 10);
+
+        const pool = await connectDB();
+        await pool.request()
+            .input('id', sql.Int, id)
+            .input('password_hash', sql.NVarChar, hash)
+            .query('UPDATE usuarios SET password_hash = @password_hash WHERE id = @id');
+        
+        res.json({ success: true, message: 'Contraseña actualizada correctamente.' });
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // --- RUTAS DE CONFIGURACIÓN ---
 
 // OBTENER TODA LA CONFIGURACIÓN (sin cambios)
