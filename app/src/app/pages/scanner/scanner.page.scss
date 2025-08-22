@@ -1,0 +1,117 @@
+// Contenedor principal para unificar el padding y centrar el contenido
+ion-content {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+}
+
+// Tarjeta de usuario con colores de alto contraste
+.user-card {
+  background: var(--ion-color-primary);
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+
+  .user-avatar ion-icon {
+    font-size: 56px;
+    color: var(--ion-color-secondary);
+  }
+
+  .user-details {
+    margin-left: 16px;
+    h2 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #ffffff;
+    }
+    p {
+      margin: 2px 0 0;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+}
+
+// Tarjetas de estadísticas con texto legible
+.sync-stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px 0;
+  gap: 16px;
+
+  .stat-item {
+    background: var(--ion-card-background);
+    flex: 1;
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--ion-text-color);
+      margin-bottom: 8px;
+      display: block; // <-- ¡CAMBIO CLAVE AQUÍ!
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+// Sección de escaneo con botón que resalta
+.scan-section {
+  text-align: center;
+  padding: 20px 0;
+  .scan-button {
+    --background: var(--ion-color-secondary);
+    --background-activated: var(--ion-color-secondary-shade);
+    --box-shadow: 0 8px 16px rgba(243, 122, 34, 0.3);
+    width: 100px;
+    height: 100px;
+  }
+  .scan-instruction {
+    margin-top: 16px;
+    color: var(--ion-color-medium);
+  }
+}
+
+// Botones de acción visibles (estilo "fantasma")
+.action-buttons {
+  padding-bottom: 16px;
+  ion-button {
+    --border-color: rgba(255, 255, 255, 0.5);
+    --color: rgba(255, 255, 255, 0.8);
+    --border-radius: 12px;
+    height: 48px;
+    margin-bottom: 8px;
+  }
+}
+
+// Sección de "No hay escaneos" con mejor legibilidad
+.no-scans {
+  text-align: center;
+  padding: 20px;
+  color: var(--ion-color-medium);
+
+  .no-scans-icon {
+    font-size: 3rem;
+    margin-bottom: 8px;
+  }
+}
+
+// Lista de escaneos recientes (si los hubiera)
+.recent-scans {
+  ion-item {
+    --background: var(--ion-card-background);
+    margin-bottom: 8px;
+    border-radius: 12px;
+  }
+}

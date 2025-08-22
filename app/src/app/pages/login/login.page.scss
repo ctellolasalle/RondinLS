@@ -1,0 +1,63 @@
+.login-content {
+  // Degradado sutil con los colores del logo
+  --background: linear-gradient(160deg, var(--ion-color-primary) 0%, #1e058f 100%);
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 40px;
+
+  .login-logo {
+    max-width: 200px;
+    margin-bottom: 25px; // Aumentamos un poco el espacio
+  }
+  
+  h1 {
+    color: var(--ion-text-color);
+    font-size: 1.6rem;      // <-- Aumentamos el tamaño
+    font-weight: 700;
+    letter-spacing: 0.5px; // <-- Añadimos espaciado para más claridad
+    margin-bottom: 8px;    // <-- Reducimos el espacio con el subtítulo
+  }
+  
+  p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;       // <-- Ajustamos el tamaño
+    font-weight: 400;      // <-- Lo hacemos menos grueso
+  }
+}
+
+ion-item {
+  --background: rgba(255, 255, 255, 0.1);
+  --border-radius: 12px;
+  margin-bottom: 16px;
+  --padding-start: 16px;
+  
+  ion-icon {
+    color: var(--ion-color-medium);
+  }
+  
+  ion-input {
+    --color: var(--ion-text-color);
+  }
+}
+
+.login-button {
+  --background: var(--ion-color-secondary);
+  --background-hover: var(--ion-color-secondary-shade);
+  --color: var(--ion-color-secondary-contrast);
+  --border-radius: 12px;
+  height: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 20px;
+}

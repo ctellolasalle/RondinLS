@@ -1,0 +1,40 @@
+// El historial ya funciona bien con los estilos globales de tema oscuro.
+// Este código asegura que los fondos y textos sean consistentes.
+ion-list {
+  background: transparent;
+  padding: 8px;
+}
+
+ion-item {
+  --background: var(--ion-card-background);
+  margin-bottom: 8px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+
+  ion-label {
+    h2 {
+      font-weight: 600;
+      color: var(--ion-text-color);
+    }
+    h3 {
+      color: var(--ion-color-medium);
+      font-weight: 400;
+    }
+    p {
+      color: var(--ion-color-success);
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.no-records {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--ion-color-medium);
+  
+  .no-records-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+  }
+}

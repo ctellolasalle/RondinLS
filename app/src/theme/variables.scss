@@ -1,0 +1,36 @@
+:root {
+  /* Paleta de Colores Institucional La Salle (Ajustada para UX) */
+  --ion-color-primary: #1e058f;       // Azul marino oscuro del logo
+  --ion-color-primary-rgb: 10,25,49;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255,255,255;
+  --ion-color-primary-shade: #09162b;
+  --ion-color-primary-tint: #233045;
+
+  --ion-color-secondary: #f37a22;     // Naranja/Dorado del logo
+  --ion-color-secondary-rgb: 243,122,34;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255,255,255;
+  --ion-color-secondary-shade: #d66b1e;
+  --ion-color-secondary-tint: #f48738;
+  
+  /* Colores de fondo y texto para Tema Oscuro */
+  --ion-background-color: #121212;
+  --ion-background-color-rgb: 18,18,18;
+
+  --ion-text-color: #ffffff;
+  --ion-text-color-rgb: 255,255,255;
+
+  --ion-item-background: #1e1e1e;
+  --ion-card-background: #1e1e1e;
+
+  /* Colores funcionales */
+  --ion-color-success: #2dd36f;
+  --ion-color-warning: #ffc409;
+  --ion-color-danger: #eb445a;
+  --ion-color-medium: #92949c;
+
+  /* Barra de herramientas */
+  --ion-toolbar-background: #1e1e1e;
+  --ion-toolbar-color: var(--ion-color-primary-contrast);
+}

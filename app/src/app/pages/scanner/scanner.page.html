@@ -1,0 +1,128 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Escaner QR</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="user-info">
+    <div class="user-card">
+      <div class="user-avatar">
+        <ion-icon name="person-circle-outline"></ion-icon>
+      </div>
+      <div class="user-details">
+        <h2>{{ currentUser?.nombre }}</h2>
+        <p class="user-role">{{ currentUser?.rol }}</p>
+        <p class="user-email">{{ currentUser?.email }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sync-stats">
+    <div class="stat-item">
+      <ion-icon name="checkmark-circle-outline" color="success"></ion-icon>
+      <div class="stat-content">
+        <span class="stat-number">{{ syncedScans }}</span>
+        <span class="stat-label">Sincronizados</span>
+      </div>
+    </div>
+    
+    <div class="stat-item">
+      <ion-icon name="cloud-upload-outline" color="warning"></ion-icon>
+      <div class="stat-content">
+        <span class="stat-number">{{ pendingScans }}</span>
+        <span class="stat-label">Pendientes</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scan-section">
+    <div class="scan-button-container">
+      <ion-button 
+        size="large" 
+        shape="round"
+        (click)="startScan()"
+        [disabled]="isScanning"
+        class="scan-button">
+        <ion-icon 
+          [name]="isScanning ? 'stop-outline' : 'qr-code-outline'" 
+          slot="icon-only"
+          class="scan-icon">
+        </ion-icon>
+      </ion-button>
+      
+      <p class="scan-instruction">
+        {{ isScanning ? 'Escaneando codigo QR...' : 'Toca para escanear QR' }}
+      </p>
+      
+      <ion-button 
+        *ngIf="isScanning"
+        fill="outline" 
+        color="medium"
+        (click)="stopScanning()">
+        <ion-icon name="stop-outline" slot="start"></ion-icon>
+        Cancelar
+      </ion-button>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <ion-button 
+      expand="block" 
+      fill="outline" 
+      (click)="viewHistory()"
+      class="action-button">
+      <ion-icon name="time-outline" slot="start"></ion-icon>
+      Ver Historial
+    </ion-button>
+    
+    <ion-button 
+      expand="block" 
+      fill="outline" 
+      (click)="syncNow()"
+      [disabled]="pendingScans === 0"
+      class="action-button">
+      <ion-icon name="sync-outline" slot="start"></ion-icon>
+      Sincronizar Ahora
+    </ion-button>
+  </div>
+
+  <div class="recent-scans" *ngIf="recentScans.length > 0">
+    <h3>Ultimos Escaneos</h3>
+    
+    <ion-list lines="full">
+      <ion-item *ngFor="let scan of recentScans.slice(0, 5)">
+        <ion-icon 
+          [name]="getSyncStatusIcon(scan.syncStatus)" 
+          [color]="getSyncStatusColor(scan.syncStatus)"
+          slot="start">
+        </ion-icon>
+        
+        <ion-label>
+          <h3>Sitio ID: {{ scan.id_sitio }}</h3>
+          <p>{{ scan.fecha | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+          <p *ngIf="scan.latitud && scan.longitud" class="location-info">
+            📍 Ubicacion registrada
+          </p>
+        </ion-label>
+        
+        <ion-note slot="end" [color]="getSyncStatusColor(scan.syncStatus)">
+          {{ scan.syncStatus === 'synced' ? 'Sincronizado' : 
+             scan.syncStatus === 'pending' ? 'Pendiente' : 'Error' }}
+        </ion-note>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div class="no-scans" *ngIf="recentScans.length === 0">
+    <ion-icon name="qr-code-outline" class="no-scans-icon"></ion-icon>
+    <p>No hay escaneos registrados</p>
+    <p class="no-scans-subtitle">Escanea tu primer codigo QR para comenzar</p>
+  </div>
+
+</ion-content>
