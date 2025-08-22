@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Rondas - Admin</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <!-- ❌ MOVER EL SCRIPT QR DE AQUÍ -->
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="loginSection">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="logo-section">
+                    <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                    <h2 class="mb-4">Panel de Administración</h2>
+                    <p class="text-muted">Control de Rondas</p>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            <input type="email" id="email" class="form-control" required placeholder="admin@test.com">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                            <input type="password" id="password" class="form-control" required placeholder="admin123">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-sign-in-alt me-2"></i>
+                        Iniciar Sesión
+                    </button>
+                </form>
+                
+                <div class="mt-4 text-center">
+                    <small class="text-muted">
+                        Usuario por defecto: admin@test.com / admin123
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminSection" class="hidden">
+        <!-- Header -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-gradient">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-shield-alt me-2"></i>
+                    Control de Rondas
+                </a>
+                
+                <div class="navbar-nav ms-auto">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>
+                            <span id="currentUserName">Administrador</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="logout()">
+                                <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3 col-lg-2 sidebar">
+                    <div class="sidebar-content">
+                        <ul class="nav nav-pills flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#dashboard">
+                                    <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#sitios">
+                                    <i class="fas fa-qrcode me-2"></i>Sitios
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#registros">
+                                    <i class="fas fa-list me-2"></i>Registros
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#usuarios">
+                                    <i class="fas fa-users me-2"></i>Usuarios
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-md-9 col-lg-10 main-content">
+                    <div class="tab-content">
+                        <!-- Dashboard Tab -->
+                        <div class="tab-pane fade show active" id="dashboard">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2>Dashboard</h2>
+                                <button class="btn btn-outline-primary" onclick="loadDashboard()">
+                                    <i class="fas fa-sync-alt me-1"></i>Actualizar
+                                </button>
+                            </div>
+
+                            <!-- Stats Cards -->
+                            <div class="row mb-4">
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="stats-card stats-primary">
+                                        <div class="stats-icon">
+                                            <i class="fas fa-qrcode"></i>
+                                        </div>
+                                        <div class="stats-content">
+                                            <h3 id="totalSitios">-</h3>
+                                            <p>Total Sitios</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="stats-card stats-success">
+                                        <div class="stats-icon">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div class="stats-content">
+                                            <h3 id="registrosHoy">-</h3>
+                                            <p>Registros Hoy</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="stats-card stats-warning">
+                                        <div class="stats-icon">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                        <div class="stats-content">
+                                            <h3 id="totalUsuarios">-</h3>
+                                            <p>Total Usuarios</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="stats-card stats-info">
+                                        <div class="stats-icon">
+                                            <i class="fas fa-calendar-week"></i>
+                                        </div>
+                                        <div class="stats-content">
+                                            <h3 id="registrosSemana">-</h3>
+                                            <p>Esta Semana</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recent Activity -->
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 id="rondaHeader">Cargando información de la ronda...</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="rondaReportContainer" class="ronda-container">
+                                        <div class="text-center p-4">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Cargando...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sitios Tab -->
+                        <div class="tab-pane fade" id="sitios">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2>Gestión de Sitios</h2>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5><i class="fas fa-plus me-2"></i>Crear Nuevo Sitio</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">Nombre del Sitio</label>
+                                                <input type="text" id="nuevoSitio" class="form-control" placeholder="Ej: Garita Principal">
+                                            </div>
+                                            <button class="btn btn-success" onclick="crearSitio()">
+                                                <i class="fas fa-plus me-2"></i>Crear Sitio y Generar QR
+                                            </button>
+                                            
+                                            <div id="qrResult" class="mt-4"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5><i class="fas fa-list me-2"></i>Sitios Existentes</h5>
+                                            <button class="btn btn-sm btn-info" onclick="imprimirSeleccionados()">
+                                                <i class="fas fa-print me-1"></i>Imprimir Seleccionados
+                                            </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 50px;">
+                                                                <input class="form-check-input" type="checkbox" onclick="Sites.toggleAllCheckboxes(this)">
+                                                            </th>
+                                                            <th>ID</th>
+                                                            <th>Nombre</th>
+                                                            <th>Acciones</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="sitiosTable">
+                                                        </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Registros Tab -->
+                        <div class="tab-pane fade" id="registros">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2>Registros de Rondas</h2>
+                            </div>
+
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-filter me-2"></i>Filtros</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="form-label">Fecha Desde</label>
+                                            <input type="date" id="fechaDesde" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Fecha Hasta</label>
+                                            <input type="date" id="fechaHasta" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Usuario</label>
+                                            <select id="filterUsuario" class="form-select">
+                                                <option value="">Todos los usuarios</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Sitio</label>
+                                            <select id="filterSitio" class="form-select">
+                                                <option value="">Todos los sitios</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <button class="btn btn-primary" onclick="filtrarRegistros()">
+                                            <i class="fas fa-search me-2"></i>Filtrar
+                                        </button>
+                                        <button class="btn btn-outline-primary" onclick="loadRegistros()">
+                                            <i class="fas fa-sync-alt me-2"></i>Limpiar Filtros
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-table me-2"></i>Listado de Registros</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Usuario</th>
+                                                    <th>Sitio</th>
+                                                    <th>Fecha y Hora</th>
+                                                    <th>Ubicación</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="registrosTable">
+                                                <tr>
+                                                    <td colspan="4" class="text-center">
+                                                        <div class="spinner-border spinner-border-sm" role="status"></div>
+                                                        Cargando registros...
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Usuarios Tab -->
+                        <div class="tab-pane fade" id="usuarios">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2>Gestión de Usuarios</h2>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5><i class="fas fa-user-plus me-2"></i>Crear Nuevo Usuario</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">Nombre Completo</label>
+                                                <input type="text" id="nuevoUsuarioNombre" class="form-control" placeholder="Juan Pérez">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" id="nuevoUsuarioEmail" class="form-control" placeholder="juan@ejemplo.com">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Contraseña</label>
+                                                <input type="password" id="nuevoUsuarioPassword" class="form-control" placeholder="Mínimo 6 caracteres">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Rol</label>
+                                                <select id="nuevoUsuarioRol" class="form-select">
+                                                    <option value="usuario">Usuario (Guardia)</option>
+                                                    <option value="administrador">Administrador</option>
+                                                </select>
+                                            </div>
+                                            <button class="btn btn-success" onclick="crearUsuario()">
+                                                <i class="fas fa-user-plus me-2"></i>Crear Usuario
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5><i class="fas fa-users me-2"></i>Usuarios Registrados</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Nombre</th>
+                                                            <th>Email</th>
+                                                            <th>Rol</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="usuariosTable">
+                                                        <tr>
+                                                            <td colspan="3" class="text-center">
+                                                                <div class="spinner-border spinner-border-sm" role="status"></div>
+                                                                Cargando usuarios...
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Reporte de Ronda Tab -->
+                        <div class="tab-pane fade" id="reporteRonda">
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2><i class="fas fa-clipboard-check me-2"></i>Estado de la Ronda Nocturna</h2>
+                                <button class="btn btn-outline-primary" onclick="RondaReport.load()">
+                                    <i class="fas fa-sync-alt me-1"></i>Actualizar
+                                </button>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 id="rondaHeader">Cargando información de la ronda...</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="rondaReportContainer" class="ronda-container">
+                                        <div class="text-center p-4">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Cargando...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3">Procesando...</p>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="toast" class="toast" role="alert">
+            <div class="toast-header">
+                <strong class="me-auto" id="toastTitle">Notificación</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="toastMessage">
+                Mensaje aquí
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editSiteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Sitio</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editSiteName" class="form-label">Nuevo nombre del sitio</label>
+                        <input type="text" class="form-control" id="editSiteName" placeholder="Introduce el nuevo nombre">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="Sites.handleUpdate()">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteSiteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger"><i class="fas fa-exclamation-triangle me-2"></i>Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Estás a punto de eliminar el sitio:</p>
+                    <p class="text-center bg-light p-2 rounded">
+                        <strong id="deleteSiteName"></strong>
+                    </p>
+                    <p class="mt-3">¿Estás seguro? Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="Sites.handleDelete()">Sí, Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="resetPasswordModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Restablecer Contraseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Estás cambiando la contraseña para el usuario:</p>
+                    <p class="text-center bg-light p-2 rounded">
+                        <strong id="resetPasswordUserName"></strong>
+                    </p>
+                    <hr>
+                    <div class="mb-3">
+                        <label for="newUserPassword" class="form-label">Nueva Contraseña</label>
+                        <input type="password" class="form-control" id="newUserPassword" placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmNewUserPassword" class="form-label">Confirmar Nueva Contraseña</label>
+                        <input type="password" class="form-control" id="confirmNewUserPassword" placeholder="Vuelve a escribir la contraseña">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="Users.handleResetPassword()">Guardar Contraseña</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ SCRIPTS EN EL ORDEN CORRECTO -->
+    
+    <!-- 1. Bootstrap primero -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 2. QRCode librería -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
+    
+    <!-- 3. Tu app.js AL FINAL -->
+    <script src="app.js"></script>
+    
+    <!-- 4. Verificación de carga -->
+    <script>
+        console.log('🔍 Verificando librerías...');
+        console.log('Bootstrap:', typeof bootstrap !== 'undefined' ? '✅' : '❌');
+        console.log('QRCode:', typeof QRCode !== 'undefined' ? '✅' : '❌');
+        
+        if (typeof QRCode === 'undefined') {
+            console.error('❌ QRCode no se cargó. Intentando CDN alternativo...');
+            
+            // Cargar CDN alternativo
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js';
+            script.onload = () => console.log('✅ QRCode cargado desde CDN alternativo');
+            script.onerror = () => console.error('❌ Error cargando QRCode desde CDN alternativo');
+            document.head.appendChild(script);
+        }
+    </script>
+</body>
+</html>
